@@ -14,30 +14,6 @@ on:
   repository_dispatch:
   workflow_dispatch:
     inputs:
-      WA_FW:
-        description: 'Choose mt_wifi firmware'
-        required: true
-        default: 'mt7986-fw-20230808'
-        type: choice
-        options:
-        - no-new-fw
-        - mt7986-fw-20221208
-        - mt7986-fw-jdc
-        - mt7986-fw-20230421
-        - mt7986-fw-20230808
-        - mt7986-fw-20231024
-      WO_FW:
-        description: 'Choose warp firmware'
-        required: true
-        default: 'mt7986-fw-20230808'
-        type: choice
-        options:
-        - no-new-fw
-        - mt7986-fw-jdc
-        - mt7986-fw-20230421
-        - mt7986-fw-20230808
-        - mt7986-fw-20231024
-
       ssh:
         description: 'SSH connection to Actions'
         required: false
