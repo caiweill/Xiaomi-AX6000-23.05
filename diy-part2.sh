@@ -10,10 +10,18 @@
 # Description: OpenWrt DIY script part 2 (After Update feeds)
 #
 
-# Modify default IP
+# 更改ip 名称
 sed -i 's/192.168.6.1/10.0.0.1/g' package/base-files/files/bin/config_generate
-sed -i 's/ImmortalWrt/MeHome/g' package/base-files/files/bin/config_generate
-cat $GITHUB_WORKSPACE/sysctl.conf > package/base-files/files/etc/sysctl.conf
+sed -i 's/ImmortalWrt/AX6000/g' package/base-files/files/bin/config_generate
+
+# ttyd自动登录
+sed -i "s?/bin/login?/usr/libexec/login.sh?g" feeds/packages/utils/ttyd/files/ttyd.config
+
+# Theme
+git clone https://github.com/sirpdboy/luci-theme-kucat package/luci-theme-kucat -b js
+
+# 进阶设置
+git clone https://github.com/sirpdboy/luci-app-advancedplus package/luci-app-advancedplus
 
 ## 安装前置 mosdns
 rm -rf feeds/packages/lang/golang
@@ -33,16 +41,8 @@ git clone --depth 1 https://github.com/vernesong/openclash.git OpenClash
 rm -rf feeds/luci/applications/luci-app-openclash
 mv OpenClash/luci-app-openclash feeds/luci/applications/luci-app-openclash
 
-## meta core
-#curl -sL -m 30 --retry 2 https://raw.githubusercontent.com/vernesong/OpenClash/core/master/meta/clash-linux-arm64.tar.gz -o /tmp/clash.tar.gz
-#tar zxvf /tmp/clash.tar.gz -C /tmp >/dev/null 2>&1
-#chmod +x /tmp/clash >/dev/null 2>&1
-#mv /tmp/clash feeds/luci/applications/luci-app-openclash/root/etc/openclash/core/clash_meta >/dev/null 2>&1
-
-## GeoIP 数据库
-#curl -sL -m 30 --retry 2 https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat -o /tmp/GeoIP.dat
-#mv /tmp/GeoIP.dat feeds/luci/applications/luci-app-openclash/root/etc/openclash/GeoIP.dat >/dev/null 2>&1
-
-## GeoSite 数据库
-#curl -sL -m 30 --retry 2 https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat -o /tmp/GeoSite.dat
-#mv -f /tmp/GeoSite.dat feeds/luci/applications/luci-app-openclash/root/etc/openclash/GeoSite.dat >/dev/null 2>&1
+echo "CONFIG_PACKAGE_luci-app-ttyd=y" >> .config
+echo "CONFIG_PACKAGE_luci-app-mosdns=y" >> .config
+echo "CONFIG_PACKAGE_luci-app-airconnect=y" >> .config
+echo "CONFIG_PACKAGE_luci-app-advancedplus=y" >> .config
+echo "CONFIG_PACKAGE_luci-theme-kucat=y" >> .config
